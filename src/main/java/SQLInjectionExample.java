@@ -7,11 +7,12 @@ public class SQLInjectionExample {
         // ó
         Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/db", "root", "root");
         // ó
-        String query = "SELECT * FROM users WHERE username = '" + userInputA + "';";
+        String query = "SELECT * FROM users WHERE username = ?;";
         // ó
-        Statement stmt = con.createStatement();
+        PreparedStatement stmt = con.prepareStatement(query);
         // ó
-        ResultSet rs = stmt.executeQuery(query);
+        stmt.setString(1, userInputA);
+        ResultSet rs = stmt.executeQuery();
 
         while (rs.next()) {
             String username = rs.getString("username");
